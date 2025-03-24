@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="buttonBackground">#424242</color>
+    <color name="arithmeticButtonBackground">#7E57C2</color>
+    <color name="clearButtonBackground">#D84315</color>
+    <color name="equalsButtonBackground">#388E3C</color>
+</resources>

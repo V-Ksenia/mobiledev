@@ -7,6 +7,37 @@
     android:background="@drawable/app_background"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/themeToggleButton"
+        android:layout_width="55dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="548dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:onClick="toggleTheme"
+        android:padding="2dp"
+        android:text="Theme"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/previousCalculationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="612dp"
+        android:background="@drawable/app_background"
+        android:onClick="openHistory"
+        android:text="History"
+        android:textColor="@color/tanAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/previousCalculationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/previousCalculationView"
         android:layout_width="wrap_content"
@@ -29,8 +60,8 @@
         android:textAlignment="textEnd"
         android:inputType="textPersonName"
         android:hint="@string/displyHint"
-        android:textColorHint="@color/greyAccent"
-        android:textColor="@color/white"
+        android:textColorHint="?attr/editTextColor"
+        android:textColor="?attr/editTextColor"
         android:textSize="36sp"
         android:importantForAutofill="no"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"

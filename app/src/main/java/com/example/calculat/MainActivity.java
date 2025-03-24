@@ -1,10 +1,18 @@
 package com.example.calculat;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static androidx.core.graphics.drawable.DrawableCompat.applyTheme;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import org.mariuszgromada.math.mxparser.*;
@@ -12,15 +20,41 @@ import android.view.KeyEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.example.calculat.model.HistoryEntry;
+import com.example.calculat.model.ThemeSetting;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView previousCalculation;
     private EditText display;
     private GestureDetector gestureDetector;
+    private FirebaseFirestore db;
+    private DocumentReference themeRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+        themeRef = db.collection("settings").document("theme");
+
+        // Загружаем тему из Firestore
+        themeRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists() && documentSnapshot.contains("isDarkTheme")) {
+                boolean isDarkTheme = documentSnapshot.getBoolean("isDarkTheme");
+                applyTheme(isDarkTheme);
+            }
+        });
+
         setContentView(R.layout.activity_main);
 
         previousCalculation = findViewById(R.id.previousCalculationView);
@@ -49,6 +83,22 @@ public class MainActivity extends AppCompatActivity {
         display.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
     }
 
+    public void toggleTheme(View view) {
+        boolean isDarkTheme = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+        boolean newTheme = !isDarkTheme;
+
+        applyTheme(newTheme);
+
+        themeRef.set(new ThemeSetting(newTheme))
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Theme updated in Firestore"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error updating theme", e));
+    }
+
+    private void applyTheme(boolean isDarkTheme) {
+        AppCompatDelegate.setDefaultNightMode(
+                isDarkTheme ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
+    }
 
     private void backspaceOnSwipe() {
         String text = display.getText().toString();
@@ -153,6 +203,30 @@ public class MainActivity extends AppCompatActivity {
 
         display.setText(result);
         display.setSelection(result.length());
+
+        saveHistory(userExp, result);
+    }
+
+    private void saveHistory(String expression, String result) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> historyEntry = new HashMap<>();
+        historyEntry.put("expression", expression);
+        historyEntry.put("result", result);
+        historyEntry.put("timestamp", System.currentTimeMillis()); // Сортировка по времени
+
+        db.collection("history")
+                .add(historyEntry)
+                .addOnSuccessListener(documentReference ->
+                        Log.d("Firebase", "История сохранена: " + documentReference.getId()))
+                .addOnFailureListener(e ->
+                        Log.e("Firebase", "Ошибка сохранения в Firestore", e));
+    }
+
+
+    public void openHistory(View view) {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
     }
 
     public void backspaceBTNPush(View view) {

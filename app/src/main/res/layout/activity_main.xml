@@ -7,6 +7,37 @@
     android:background="@drawable/app_background"
     tools:context=".MainActivity">
 
+
+    <Button
+        android:id="@+id/themeToggleButton"
+        android:layout_width="75dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="280dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:onClick="toggleTheme"
+        android:padding="5dp"
+        android:text="Theme"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/previousCalculationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/app_background"
+        android:onClick="openHistory"
+        android:text="History"
+        android:textColor="@color/tanAccent"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/previousCalculationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/previousCalculationView"
         android:layout_width="wrap_content"
@@ -28,12 +59,11 @@
         android:textAlignment="textEnd"
         android:inputType="textPersonName"
         android:hint="@string/displyHint"
-        android:textColorHint="@color/greyAccent"
-        android:textColor="@color/white"
+        android:textColorHint="?attr/editTextColor"
+        android:textColor="?attr/editTextColor"
         android:textSize="48sp"
         android:importantForAutofill="no"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
