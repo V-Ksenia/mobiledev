@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         display.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM", "Fetching FCM token failed", task.getException());
+                        return;
+                    }
+
+                    // Получаем и логируем токен
+                    String token = task.getResult();
+                    Log.d("FCM Token", token);
+                });
     }
 
     public void toggleTheme(View view) {
