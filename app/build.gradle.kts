@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.biometric:biometric:1.4.0-alpha03")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.appcompat)
@@ -43,6 +45,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
+    implementation(libs.security.crypto)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

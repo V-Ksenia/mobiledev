@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/passkeyInput"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:hint="Введите Passkey"
+        android:inputType="numberPassword" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Войти" />
+
+    <Button
+        android:id="@+id/btnUseBiometric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Использовать биометрию" />
+
+    <Button
+        android:id="@+id/btnForgotPasskey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Забыл Passkey?" />
+</LinearLayout>
